@@ -2,21 +2,22 @@ from ultralytics import settings
 from ultralytics import YOLO
 from roboflow import Roboflow
 from ultralytics.utils.torch_utils import strip_optimizer
+import sys
+from utils import download_extract, find_yaml
 
 
 
 if __name__ == '__main__':
-
-#TODO: MOVE TO SEPERATE FILE
-#DOWNLOAD SMALL DATASET
-
-    #checkpoint files sind größer, siehe: https://github.com/ultralytics/ultralytics/issues/1736
     #The strip_optimizer() function updates the checkpoint dictionary value for model, replacing it with ema, and sets ema and optimizer keys to None, which will reduce the checkpoint size by 3/4.
     #strip_optimizer(r'C:\dev\iu-study\trafficsigns\src\runs\detect\train4\weights\epoch1.pt')
 
-    model = YOLO("yolo11m.pt")
-    yamlFile = "c:\\dev\\iu-study\\trafficsigns\\GTSRB\\gtrsb_yaml_0_7\data.yaml"
+    dir = download_extract("1utk4oaKASAFCOZdJ2Wpiozs5XEV1qatg", "big_dataset")
+    yamlFile = find_yaml(dir)
+    if(yamlFile == None):
+        print("ERROR YAML FILE NOT FOUND")
+        sys.exit(1)
 
+    model = YOLO("yolo11m.pt")
 
     model.train(data=yamlFile, epochs=100, imgsz=640, save_period = 1, device='0', workers = 1, batch=-1, multi_scale=True, scale=1)
 

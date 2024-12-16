@@ -1,9 +1,15 @@
 from ultralytics import YOLO
 import cv2
+from utils import download_extract
+
+
+dir = download_extract("112TjqhFWlP5TO5iPLxxDvSxMJ15CKKCW", "yolo_model")
+yolo_file = dir + "\\epoch69.pt"
 
 
 # Load the YOLO model
-model = YOLO("runs-report/train_yolo11m_def_full_0_7_multiscale/weights/best.pt")
+#model = YOLO("runs-report/train_yolo11m_def_full_0_7_multiscale/weights/epoch69.pt")
+model = YOLO(yolo_file)
 
 # Open the video file
 video_path = "test/vid.mp4"
